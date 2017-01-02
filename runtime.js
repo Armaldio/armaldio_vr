@@ -66,7 +66,7 @@ cr.plugins_.armaldio_vr = function (runtime) {
 	Acts.prototype.StartVR = function () {
 		if (!Detector.webgl) Detector.addGetWebGLMessage();
 
-		var camera, scene, scene2, renderer, renderer2, object, controls;
+		var camera, scene, scene2, renderer, renderer2, object, controls, effect;
 		var fov = 50;
 
 		init();
@@ -85,10 +85,13 @@ cr.plugins_.armaldio_vr = function (runtime) {
 			//scene.add(camera);
 
 			renderer = new THREE.WebGLRenderer({ antialias: true });
-			renderer.setClearColor(0xffffff, 1);
+			renderer.setClearColor(0x000, 1);
 			renderer.setSize(window.innerWidth, window.innerHeight);
 			renderer.domElement.style.zIndex = 5;
 			document.body.appendChild(renderer.domElement);
+
+			effect = new THREE.StereoEffect(renderer);
+			effect.setSize(window.innerWidth, window.innerWidth);
 
 			scene2 = new THREE.Scene();
 
@@ -110,7 +113,8 @@ cr.plugins_.armaldio_vr = function (runtime) {
 			requestAnimationFrame(animate);
 
 			renderer2.render(scene2, camera);
-			renderer.render(scene, camera);
+			//renderer.render(scene, camera);
+			effect.render(scene, camera);
 
 			controls.update();
 
